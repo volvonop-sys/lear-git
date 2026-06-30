@@ -1,0 +1,23 @@
+def getUrgentPatient(queue, currentTime):
+    highest_priority_score = -1
+    most_urgent_patient = None
+
+    for patient in queue:
+        # 1. คำนวณคะแนนฐานจากกลุ่ม
+        if patient.type == 'E':
+            base_score = 100
+        else:
+            base_score = 0
+            # 2. ตรวจสอบเงื่อนไขเวลารอเกิน 60 นาทีสำหรับกลุ่ม Normal
+            if (currentTime - patient.arrival_time) > 60:
+                base_score = 100  # ขยับขึ้นมาเทียบเท่า Emergency
+
+        # 3. รวมคะแนนกับ Severity Score
+        total_score = base_score + patient.severity_score
+
+        # 4. หาคนที่มีคะแนนสูงที่สุด
+        if total_score > highest_priority_score:
+            highest_priority_score = total_score
+            most_urgent_patient = patient
+
+    return most_urgent_patient
